@@ -1,0 +1,10 @@
+# Ignore local test databases
+*.db
+secure_vault.db
+
+# Ignore environmental secrets
+.env
+
+# Ignore compiled Python cache directories
+__pycache__/
+*.pyc
