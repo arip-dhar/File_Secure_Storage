@@ -179,7 +179,6 @@ def delete_file(file_id: int = Form(...), token: str = Form(...), db: Session = 
     log_action_securely("PURGE", f"Owner {user.username} issued data shred instruction on File ID {file_id}. File purged.", db)
     return {"message": "File wiped cleanly from filesystem!"}
 
-# NEW API: Pulls and decrypts logs for display inside the admin panel dashboard console loop
 @app.get("/admin/logs/")
 def get_audit_logs(db: Session = Depends(get_db)):
     raw_logs = db.query(models.AuditLog).order_by(models.AuditLog.timestamp.desc()).all()
@@ -219,6 +218,9 @@ async def read_dashboard():
             .log-time { color: #888; }
             .log-action { color: #00adb5; font-weight: bold; padding: 0 6px; }
             .log-msg { color: #ffc107; }
+            /* Footer Signature Box Styles */
+            .footer-sig { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #393e46; font-size: 14px; color: #888; font-weight: 500; letter-spacing: 1px; }
+            .footer-sig span { color: #00adb5; font-weight: bold; text-shadow: 0 0 8px rgba(0, 173, 181, 0.4); }
         </style>
     </head>
     <body>
@@ -274,11 +276,14 @@ async def read_dashboard():
                 </div>
                 <button onclick="refreshAuditLogs()" style="background-color: #393e46; font-size:11px; padding: 5px 10px; margin-top: 10px;">Query Log Database</button>
             </div>
+            
+            <div class="footer-sig">
+                🚀 System Architecture Developed by: <span>ARIP</span>
+            </div>
         </div>
         <script>
             function showResponse(elementId, text) { var el = document.getElementById(elementId); el.style.display = "block"; el.innerText = text; }
             
-            // SIEM Database Fetcher Log Refresher
             function refreshAuditLogs() {
                 fetch('/admin/logs/').then(res => res.json()).then(logs => {
                     var consoleEl = document.getElementById('logConsole');
@@ -323,7 +328,6 @@ async def read_dashboard():
                 }).catch(() => { showResponse('downloadResponse', "Network connection failure."); });
             });
 
-            // Trigger log query automatically on application dashboard initialization page bootup
             window.onload = refreshAuditLogs;
         </script>
     </body>
