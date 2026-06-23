@@ -17,3 +17,5 @@ An enterprise-grade secure file storage application built with **FastAPI** and *
 Make sure you have Python installed, then run the pip installer package manager payload using the project manifest:
 ```bash
 pip install -r requirements.txt
+python -m venv venv
+uvicorn main:app --reload
